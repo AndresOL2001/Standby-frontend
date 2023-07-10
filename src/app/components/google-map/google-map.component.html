@@ -1,0 +1,26 @@
+
+<button *ngIf="residencial != null" class="btn btn-primary" (click)="generarAcceso()">Generar Acceso</button>
+<button *ngIf="residencial == null" class="btn btn-primary" (click)="generarResidencial()">Generar Residencial</button>
+
+<div *ngIf="apiLoaded | async">
+    <google-map #accesosMap [center]="centerMap" (mapClick)="moveMap($event)" (mapMousemove)="move($event)">
+        <map-marker *ngIf="residencial != null" [position]="residencial.position" [options]="residencial.options" (mapDragend)="actualizarPosicionResidencial($event, residencial)">
+            <map-circle  [radius]="residencial.circle.radius" [center]="residencial.circle.center" ></map-circle>
+        </map-marker>
+        <map-marker *ngFor="let acceso of residencial?.accesos" [position]="acceso.position" [options]="acceso.options" (mapDragend)="actualizarPosicion($event, acceso)">
+            <map-circle  [radius]="acceso.circle.radius" [center]="acceso.circle.center" [options]="acceso.circle.options"></map-circle>
+        </map-marker>
+    </google-map>
+    
+</div>
+<div >
+    <h1>Residencial: Real de sevilla</h1>
+    <div>Latitude: {{residencial?.position.lat}}</div>
+    <div>Longitude: {{residencial?.position.lng}}</div>
+</div>
+<hr/>
+<div *ngFor="let acceso of residencial.accesos">
+    <div>Acceso</div>
+    <div>Latitude: {{acceso?.position.lat}}</div>
+    <div>Longitude: {{acceso?.position.lng}}</div>
+</div>
