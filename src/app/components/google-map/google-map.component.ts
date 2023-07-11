@@ -11,7 +11,8 @@ export class GoogleMapComponent {
   apiLoaded: Observable<boolean>;
   residencial:any;
   circles: any[] = [];
-  
+  direccion:string = "";
+  nombre:string = "";
   accesos: any[] = [];
   
   colors:any[] = ['green','blue','yellow','red','purple','orange'];
@@ -46,6 +47,8 @@ export class GoogleMapComponent {
   }
 
   generarResidencial() {
+    console.log(this.direccion);
+    console.log(this.nombre);
     //post
     let position: google.maps.LatLngLiteral = {
       lat: 29.07497302489944,

@@ -1,6 +1,10 @@
 
 <button *ngIf="residencial != null" class="btn btn-primary" (click)="generarAcceso()">Generar Acceso</button>
 <button *ngIf="residencial == null" class="btn btn-primary" (click)="generarResidencial()">Generar Residencial</button>
+<label>Direccion</label>
+<input [(ngModel)]="direccion" type="text"/>
+<label>Nombre</label>
+<input [(ngModel)]="nombre" type="text"/>
 
 <div *ngIf="apiLoaded | async">
     <google-map #accesosMap [center]="centerMap" (mapClick)="moveMap($event)" (mapMousemove)="move($event)">
@@ -14,7 +18,9 @@
     
 </div>
 <div >
-    <h1>Residencial: Real de sevilla</h1>
+    <h1>Residencial: {{nombre}}</h1>
+    <h1>Direccion: {{direccion}}</h1>
+
     <div>Latitude: {{residencial?.position.lat}}</div>
     <div>Longitude: {{residencial?.position.lng}}</div>
 </div>

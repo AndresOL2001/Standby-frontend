@@ -7,6 +7,7 @@ import { GoogleMapComponent } from '../components/google-map/google-map.componen
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { RouterModule } from '@angular/router';
     GoogleMapsModule,
     HttpClientModule,
     HttpClientJsonpModule,
-    PagesRoutingModule
+    PagesRoutingModule,
+    FormsModule
   ],
   exports:[GoogleMapComponent]
 })
