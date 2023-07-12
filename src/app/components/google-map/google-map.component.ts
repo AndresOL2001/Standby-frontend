@@ -74,7 +74,7 @@ export class GoogleMapComponent {
   }
 
   generarResidencial() {
-    const crearResidencialUrl = 'http://24.199.122.158:5000/api/residencial';
+    
     //post
     let position: google.maps.LatLngLiteral = {
       lat: this.location?.latitude,
@@ -93,26 +93,26 @@ export class GoogleMapComponent {
     }
     this.residencial = residencial;
 
-    const data = {
-      nombre: this.nombre,
-      direccion: this.direccion,
-      numeroSerie: this.generateRandomNumber(),
-      latitudResidencial: this.residencial.position.lat,
-      longitudResidencial: this.residencial.position.lng
-    };
+    // const data = {
+    //   nombre: this.nombre,
+    //   direccion: this.direccion,
+    //   numeroSerie: this.generateRandomNumber(),
+    //   latitudResidencial: this.residencial.position.lat,
+    //   longitudResidencial: this.residencial.position.lng
+    // };
 
-    const headers  = new HttpHeaders({ "Content-Type": "application/json;charset=UTF-8" }); 
+    // const headers  = new HttpHeaders({ "Content-Type": "application/json;charset=UTF-8" }); 
 
-    this.httpClient.post(crearResidencialUrl, data, { headers: headers } ).subscribe({
-      next:(resp:any) => {
-        this.numSerie = resp.numSerie;
-        this.idResidencial = resp.idResidencial
-        console.log('Respuesta: ', resp);
-      },
-      error:(test:any) => {
-        console.log("Error!!", test.error.message)
-      }
-    })
+    // this.httpClient.post(crearResidencialUrl, data, { headers: headers } ).subscribe({
+    //   next:(resp:any) => {
+    //     this.numSerie = resp.numSerie;
+    //     this.idResidencial = resp.idResidencial
+    //     console.log('Respuesta: ', resp);
+    //   },
+    //   error:(test:any) => {
+    //     console.log("Error!!", test.error.message)
+    //   }
+    // })
 
   }
   
@@ -171,9 +171,10 @@ export class GoogleMapComponent {
   
   }
 
-  guardarAccesos(){
+  guardarTodo(){
 
     const crearAccesoUrl = 'http://24.199.122.158:5000/api/accesos';
+    const crearResidencialUrl = 'http://24.199.122.158:5000/api/residencial';
 
     // this.residencial.accesos.forEach((acceso:any, index: number) => {
     //   console.log('Nombres ingresados:', this.nombresAccesos[index]);
@@ -182,29 +183,61 @@ export class GoogleMapComponent {
     //   console.log('Latitud:', acceso.position.lat);
     //   console.log('Longitud', acceso.position.lng);
     // });
+
+
+    // console.log('Nombre Residencial', dataResidencial.nombre);
+    // console.log('Direccion Residencial:', dataResidencial.direccion);
+    // console.log('Numero de serie residencial', dataResidencial.numeroSerie);
+    // console.log('Latitud', dataResidencial.latitudResidencial);
+    // console.log('Longitud', dataResidencial.longitudResidencial);
+
     const headers  = new HttpHeaders({ "Content-Type": "application/json;charset=UTF-8" });
 
-    this.residencial.accesos.forEach((acceso:any, index: number) => {
-      const data = {
-        idResidencial:this.idResidencial,
-        latitudCaseta: acceso.position.lat,
-        longitudCaseta: acceso.position.lng,
-        direccion: this.direccionesAccesos[index],
-        nombre: this.nombresAccesos[index],
-        precio: this.preciosAccesos[index]
-      };
-  
-      this.httpClient.post(crearAccesoUrl, data, { headers: headers } ).subscribe({
-        next:(resp:any) => {
-          this.numSerie = resp.numSerie;
-          this.idResidencial = resp.idResidencial
-          console.log('Respuesta: ', resp);
-        },
-        error:(test:any) => {
-          console.log("Error!!", test.error.message)
-        }
-      })
-    });
+    const dataResidencial = {
+      nombre: this.nombre,
+      direccion: this.direccion,
+      numeroSerie: this.generateRandomNumber(),
+      latitudResidencial: this.residencial.position.lat,
+      longitudResidencial: this.residencial.position.lng
+    };
+
+    this.httpClient.post(crearResidencialUrl, dataResidencial, { headers: headers } ).subscribe({
+      next:(resp:any) => {
+        this.numSerie = resp.numSerie;
+        this.idResidencial = resp.idResidencial
+        console.log('Respuesta: ', resp);
+
+        //------------------------------------- PARA GUARDAR LOS ACCESOS -------------------------------------
+
+        this.residencial.accesos.forEach((acceso:any, index: number) => {
+
+          const dataAcceso = {
+            idResidencial:this.idResidencial,
+            latitudCaseta: acceso.position.lat,
+            longitudCaseta: acceso.position.lng,
+            direccion: this.direccionesAccesos[index],
+            nombre: this.nombresAccesos[index],
+            precio: this.preciosAccesos[index]
+          };
+      
+          this.httpClient.post(crearAccesoUrl, dataAcceso, { headers: headers } ).subscribe({
+            next:(resp:any) => {
+              this.numSerie = resp.numSerie;
+              this.idResidencial = resp.idResidencial
+              console.log('Respuesta: ', resp);
+            },
+            error:(test:any) => {
+              console.log("Error!!", test.error.message)
+            }
+          })
+        }); //fin post
+
+
+      },
+      error:(test:any) => {
+        console.log("Error!!", test.error.message)
+      }
+    }); //Fin post
 
   }//fin metodo
 }
