@@ -1,0 +1,23 @@
+<div class="d-flex aligns-items-center justify-content-center card text-center position-absolute top-50 start-50 translate-middle col-lg-4 col-md-6 col-sm-10 col-11">
+   <h1>Stand By Pass</h1>
+    <div class="card-header bg-dark text-white">
+      Iniciar Sesión
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="iniciarSesion()">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Celular</label>
+            <input [(ngModel)]="correo" [ngModelOptions]="{standalone: true}"  type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+            <input [(ngModel)]="contrasena"  [ngModelOptions]="{standalone: true}" type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+            <input (click)="guardarUsuario($event)"  type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label mx-2" for="exampleCheck1">Recuerdame</label>
+        </div>
+        <button type="submit" class="btn btn-dark">Iniciar Sesión</button>
+        </form>
+    </div>
+</div>

@@ -8,12 +8,20 @@ import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ResidencialesComponent } from './residenciales/residenciales.component';
+import { UsuariosComponent } from './usuarios/usuarios.component';
+import { GarageComponent } from './garage/garage.component';
+import { GaragesComponent } from './garages/garages.component';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
-    GoogleMapComponent
+    GoogleMapComponent,
+    ResidencialesComponent,
+    UsuariosComponent,
+    GarageComponent,
+    GaragesComponent
   ],
   imports: [
     CommonModule,

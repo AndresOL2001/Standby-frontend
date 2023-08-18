@@ -3,17 +3,19 @@
     <div class="input-container card p-4">
         <input [(ngModel)]="nombre"  type="text" class="form-control mt-2" placeholder="Nombre de la residencial" />
         <input [(ngModel)]="direccion"  type="text" class="form-control mt-2" placeholder="Direccion" />
-        <button *ngIf="residencial == null" class="btn btn-primary" (click)="generarResidencial()">Generar Residencial</button>
+        <input [(ngModel)]="radio" (input)="radioChange($event)" type="number" class="form-control mt-2" placeholder="Direccion" />
+
+        <button *ngIf="!residencial.position" class="btn btn-primary" (click)="generarResidencial()">Generar Residencial</button>
     </div>
 
     <div class="generic-container">
-        <button *ngIf="residencial != null" class="btn btn-primary" (click)="generarAcceso()">Generar Acceso</button>
+        <button *ngIf="residencial.position" class="btn btn-primary" (click)="generarAcceso()">{{esGarage == true ? 'Generar Garage' : 'Generar Acceso'}}</button>
     </div>
 
-    <div *ngIf="apiLoaded | async">
-        <google-map #accesosMap [center]="centerMap" (mapClick)="moveMap($event)" (mapMousemove)="move($event)" [zoom]="11">
+    <div *ngIf="apiLoaded | async" >
+        <google-map #accesosMap [center]="residencial.position != null ?residencial.position : centerMap" (mapClick)="moveMap($event)" (mapMousemove)="move($event)" [zoom]="15">
             <map-marker *ngIf="residencial != null" [position]="residencial.position" [options]="residencial.options" (mapDragend)="actualizarPosicionResidencial($event, residencial)">
-                <map-circle  [radius]="residencial.circle.radius" [center]="residencial.circle.center" ></map-circle>
+                <map-circle *ngIf="residencial.circle" [radius]="residencial.circle.radius" [center]="residencial.circle.center" ></map-circle>
             </map-marker>
             <map-marker *ngFor="let acceso of residencial?.accesos" [position]="acceso.position" [options]="acceso.options" (mapDragend)="actualizarPosicion($event, acceso)">
                 <map-circle  [radius]="acceso.circle.radius" [center]="acceso.circle.center" [options]="acceso.circle.options"></map-circle>
@@ -24,18 +26,22 @@
         <h4>Residencial: {{nombre}}</h4>
         <h4>Direccion: {{direccion}}</h4>
 
-        <div>Latitude: {{residencial?.position.lat}}</div>
-        <div>Longitude: {{residencial?.position.lng}}</div>
+        <div *ngIf="residencial.position">Latitude: {{residencial?.position.lat}}</div>
+        <div *ngIf="residencial.position">Longitude: {{residencial?.position.lng}}</div>
     </div>
     <hr/>
     <div *ngFor="let acceso of residencial.accesos; let i = index" class="card p-4 generic-container">
         <div class="input-container"> 
-            <input [(ngModel)]="nombresAccesos[i]" type="text" class="form-control" placeholder="Nombre del acceso">
-            <input [(ngModel)]="direccionesAccesos[i]" type="text" class="form-control" placeholder="Direccion">
-            <input [(ngModel)]="preciosAccesos[i]" type="number" class="form-control" placeholder="Precio (MXN)">
+            <input [(ngModel)]="acceso.nombre" type="text" class="form-control" placeholder="Nombre del acceso">
+            <input [(ngModel)]="acceso.direccion" type="text" class="form-control" placeholder="Direccion">
+            <input [(ngModel)]="acceso.precio" type="number" class="form-control" placeholder="Precio (MXN)">
+            <input [(ngModel)]="acceso.radio" (input)="radioAccesoChange($event,acceso)"type="number" [value]="0" class="form-control" placeholder="Radio">
+
         </div>
-        <div>Latitude: {{acceso?.position.lat}}</div>
-        <div>Longitude: {{acceso?.position.lng}}</div>
+        <div *ngIf="!editar">Latitude: {{acceso?.position.lat}}</div>
+        <div *ngIf="!editar">Longitude: {{acceso?.position.lng}}</div>
+        <div *ngIf="editar">Latitude: {{acceso?.longitudCaseta}}</div>
+        <div *ngIf="editar">Longitude: {{acceso?.latitudCaseta}}</div>
     </div>
 
     <button *ngIf="residencial.accesos.length > 0" class="btn btn-primary mb-3" (click)="guardarTodo()">Guardar Todo</button>

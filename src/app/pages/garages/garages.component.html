@@ -1,0 +1,35 @@
+<div class="container">
+    <h1>Listado de Garages: </h1>
+    <div class="table-responsive ">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">IdGarage</th>
+                    <th scope="col">Direccion</th>
+                    <th scope="col">latitudCaseta</th>
+                    <th scope="col">longitudCaseta</th>
+                    <th scope="col">Radio</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Precio</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let garage of garages;let i = index;">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{garage.idAcceso}}</td>
+                    <td>{{garage.direccion}}</td>
+                    <td>{{garage.latitudCaseta}}</td>
+                    <td>{{garage.longitudCaseta}}</td>
+                    <td>{{garage.radio}}</td>
+                    <td>{{garage.nombre}}</td>
+                    <td>{{garage.precio}}</td>
+            
+                </tr>
+               
+            </tbody>
+
+        </table>
+    </div>
+</div>
